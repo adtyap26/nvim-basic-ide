@@ -267,4 +267,19 @@ require("lazy").setup {
       require("dap_install").config("python", {})
     end,
   },
+  {
+    "chrisgrieser/nvim-genghis",
+    dependencies = {
+      {
+        "stevearc/dressing.nvim",
+      },
+    },
+  },
+
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require "user.colorizer"
+    end,
+  },
 }
