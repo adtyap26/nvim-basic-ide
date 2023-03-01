@@ -105,14 +105,14 @@ keymap("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", opts)
 keymap("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<cr>", opts)
 
 -- nvim-genghis
--- local genghis = require "genghis"
--- keymap("n", "<leader>yp", genghis.copyFilepath)
--- keymap("n", "<leader>yn", genghis.copyFilename)
--- keymap("n", "<leader>cx", genghis.chmodx)
--- keymap("n", "<leader>rf", genghis.renameFile)
--- keymap("n", "<leader>nf", genghis.createNewFile)
--- keymap("n", "<leader>yf", genghis.duplicateFile)
--- keymap("x", "<leader>x", genghis.moveSelectionToNewFile)
+
+keymap("n", "<leader>yp", ":CopyFilepath<CR>", { desc = "[C]opy [P]ath" })
+keymap("n", "<leader>yn", ":CopyFilename<CR>", { desc = "[C]opy [F]ilename" })
+keymap("n", "<leader>cx", ":Chmodx<CR>", { desc = "[F]ile [E]xecuteable" })
+keymap("n", "<leader>rf", ":RenameFile<CR>", { desc = "[R]enaming [F]ilename" })
+keymap("n", "<leader>nf", ":CreateNewFile<CR>", { desc = "[C]reating a [N]ewfile" })
+keymap("n", "<leader>yf", ":DuplicateFile<CR>", { desc = "[D]uplicating a [F]ile" })
+keymap("x", "<leader>x", ":MoveSelectionToNewFile<CR>", { desc = "[M]oving to a [N]ewfile" })
 
 --Terminal
 
