@@ -62,6 +62,10 @@ keymap("n", "x", '"_x') --Dont need to save for deleting something with x
 keymap("n", "<S-+>", "<C-a>")
 keymap("n", "<S-->", "<C-x>")
 
+-- pandoc command_mode
+keymap("n", "<leader>pf", '<cmd>!pandoc $* "%" -f markdown -t pdf -s -o "%:r".pdf<CR>', opts ) -- md to pdf
+
+
 -- Insert Mode --
 
 -- Press jk fast to enter
