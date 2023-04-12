@@ -3,6 +3,7 @@ local servers = {
   "cssls",
   "emmet_ls",
   "tsserver",
+  "texlab",
   "pyright",
   "bashls",
   "jsonls",
