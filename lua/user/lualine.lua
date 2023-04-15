@@ -35,6 +35,34 @@ function M.config()
     icons_enabled = false,
   }
 
+  local fileformat = {
+    "fileformat",
+    icons_enabled = false,
+  }
+
+
+
+
+local servername = {
+   -- Lsp server name .
+  function()
+    local msg = 'No Active Lsp'
+    local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+    local clients = vim.lsp.get_active_clients()
+    if next(clients) == nil then
+      return msg
+    end
+    for _, client in ipairs(clients) do
+      local filetypes = client.config.filetypes
+      if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+        return client.name
+      end
+    end
+    return msg
+  end,
+  icon = ' LSP:',
+}
+
   local location = {
     "location",
     padding = 0,
@@ -57,7 +85,7 @@ function M.config()
       lualine_a = { "mode" },
       lualine_b = { "branch" },
       lualine_c = { diagnostics },
-      lualine_x = { diff, spaces, "encoding", filetype },
+      lualine_x = { servername, diff, spaces, fileformat, "encoding", filetype },
       lualine_y = { location },
       lualine_z = { "progress" },
     },

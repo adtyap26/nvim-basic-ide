@@ -3,12 +3,17 @@ local M = {}
 M.servers = {
   "lua_ls",
   "cssls",
-  "html",
+  "emmet_ls",
   "tsserver",
+  "texlab",
   "pyright",
   "bashls",
   "jsonls",
+  "sqlls",
   "yamlls",
+  "dockerls",
+  "gopls",
+  "marksman",
 }
 
 return M

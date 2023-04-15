@@ -6,6 +6,10 @@ local M = {
 
 function M.config()
   local tree_cb = require("nvim-tree.config").nvim_tree_callback
+  local gheight = vim.api.nvim_list_uis()[1].height
+  local gwidth = vim.api.nvim_list_uis()[1].width
+  local width = 100
+  local height = 30
   require("nvim-tree").setup {
     update_focused_file = {
       enable = true,
@@ -49,8 +53,17 @@ function M.config()
       },
     },
     view = {
-      width = 30,
-      side = "left",
+      float = {
+			enable = true,
+			open_win_config = {
+				relative = "editor",
+				border = "rounded",
+				width = width,
+				height = height,
+				row = (gheight - height) * 0.5,
+				col = (gwidth - width) * 0.5,
+			},
+      },
       mappings = {
         list = {
           { key = { "l", "<CR>", "o" }, cb = tree_cb "edit" },
@@ -58,7 +71,7 @@ function M.config()
           { key = "v",                  cb = tree_cb "vsplit" },
         },
       },
-    },
+  },
   }
 end
 

@@ -15,7 +15,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     vim.opt_local.spell = true
   end,
 })
--- Automatically close tab/vim when nvim-tree is the last window in the tab
+
 vim.cmd "autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif"
 
 vim.api.nvim_create_autocmd({ "VimResized" }, {
@@ -43,11 +43,20 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+
+-- optional
+
+
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+  pattern = { "*.ejs" },
   callback = function()
-    local line_count = vim.api.nvim_buf_line_count(0)
-    if line_count >= 5000 then
-      vim.cmd "IlluminatePauseBuf"
-    end
+    vim.cmd "set filetype=html"
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.php" },
+  callback = function()
+    vim.cmd "set ft=php.html"
   end,
 })
