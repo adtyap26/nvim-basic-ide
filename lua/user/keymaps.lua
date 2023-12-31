@@ -50,6 +50,11 @@ keymap("n", "<S-h>", ":bprevious<CR>", opts)
 -- Clear highlights
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
+-- Treesitter context jumping
+keymap("n", "[c", function()
+  require("treesitter-context").go_to_context()
+end, { silent = true })
+
 -- Close buffers
 keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
 
@@ -63,8 +68,7 @@ keymap("n", "<S-+>", "<C-a>")
 keymap("n", "<S-->", "<C-x>")
 
 -- pandoc command_mode
-keymap("n", "<leader>pf", '<cmd>!pandoc --pdf-engine=weasyprint $* "%" -f markdown -t pdf -s -o "%:r".pdf<CR>', opts ) -- md to pdf
-
+keymap("n", "<leader>pf", '<cmd>!pandoc --pdf-engine=weasyprint $* "%" -f markdown -t pdf -s -o "%:r".pdf<CR>', opts) -- md to pdf
 
 -- Insert Mode --
 
@@ -83,7 +87,7 @@ keymap("n", "<leader>e", ":NvimTreeToggle<CR>", opts)
 -- Telescope
 keymap("n", "<leader>ff", ":Telescope find_files<CR>", { desc = "[F]ind [F]iles" })
 keymap("n", "<leader>fg", ":Telescope live_grep<CR>", { desc = "[F]ind by [G]rep" })
-keymap("n", "<leader>sh", ":Telescope help_tags<CR>", { desc = "[S]earch [H]elp" })
+keymap("n", "<leader>ht", ":Telescope help_tags<CR>", { desc = "[S]earch [H]elp" })
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)
 keymap("n", "<leader>fs", ":Telescope grep_string<CR>", { desc = "[F]ind current [S]tring" })
 keymap("n", "<leader>s", function()
@@ -92,6 +96,7 @@ keymap("n", "<leader>s", function()
     previewer = false,
   })
 end, { desc = "[s] Fuzzily search in current buffer" })
+keymap("n", "<leader>fd", ":Telescope lsp_definitions<CR>", { desc = "[L]sp [D]efinitions" })
 
 -- Comment
 keymap("n", "<leader>/", "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", opts)

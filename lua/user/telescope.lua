@@ -4,14 +4,16 @@ if not status_ok then
 end
 
 local actions = require "telescope.actions"
+local action_layout = require "telescope.actions.layout"
 
 telescope.setup {
   defaults = {
 
+    preview = false,
+
     prompt_prefix = " ",
     selection_caret = " ",
     path_display = { "smart" },
-    file_ignore_patterns = { ".git/", "node_modules" },
 
     mappings = {
       i = {
@@ -19,6 +21,10 @@ telescope.setup {
         ["<Up>"] = actions.cycle_history_prev,
         ["<C-j>"] = actions.move_selection_next,
         ["<C-k>"] = actions.move_selection_previous,
+        ["<M-p>"] = action_layout.toggle_preview,
+      },
+      n = {
+        ["<M-p>"] = action_layout.toggle_preview,
       },
     },
   },

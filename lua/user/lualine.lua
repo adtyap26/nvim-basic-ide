@@ -33,6 +33,11 @@ local location = {
   padding = 0,
 }
 
+local operatingsystem = {
+  "fileformat",
+  icons_enabled = false,
+}
+
 local spaces = function()
   return "spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
 end
