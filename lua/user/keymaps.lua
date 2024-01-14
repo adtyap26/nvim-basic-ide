@@ -68,7 +68,7 @@ keymap("n", "<S-+>", "<C-a>")
 keymap("n", "<S-->", "<C-x>")
 
 -- pandoc command_mode
-keymap("n", "<leader>pf", '<cmd>!pandoc --pdf-engine=weasyprint $* "%" -f markdown -t pdf -s -o "%:r".pdf<CR>', opts) -- md to pdf
+keymap("n", "<leader>pf", '<cmd>!pandoc --pdf-engine=weasyprint $* "%" -f markdown -t pdf -s -o "%:r".pdf<CR>', opts) -- md to pdf (use source py env first)
 
 -- Insert Mode --
 

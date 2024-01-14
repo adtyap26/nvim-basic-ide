@@ -25,6 +25,12 @@ require("lazy").setup {
     end,
   },
   {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    config = true,
+    opts = ...,
+  },
+  {
     "lukas-reineke/indent-blankline.nvim",
     commit = "8299fe7703dfff4b1752aeed271c3b95281a952d",
     event = "BufReadPre",
@@ -87,6 +93,15 @@ require("lazy").setup {
     },
     config = function()
       require "user.treesitter"
+    end,
+  },
+  {
+    "DaikyXendo/nvim-material-icon",
+    config = function()
+      require("nvim-material-icon").setup {
+        color_icons = true,
+        default = true,
+      }
     end,
   },
   {
