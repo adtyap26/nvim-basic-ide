@@ -55,8 +55,6 @@ keymap("n", "[c", function()
   require("treesitter-context").go_to_context()
 end, { silent = true })
 
--- Close buffers
-keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
 
 -- Better paste
 -- keymap("v", "p", '"_dP', opts)

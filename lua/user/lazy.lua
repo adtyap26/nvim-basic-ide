@@ -24,6 +24,79 @@ require("lazy").setup {
       require "user.colorscheme"
     end,
   },
+  -- {
+  --   "stevearc/conform.nvim",
+  --   event = { "BufReadPre", "BufNewFile" },
+  --   config = function()
+  --     local conform = require "conform"
+  --     conform.setup {
+  --       formatters_by_ft = {
+  --         go = { "gofumpt" },
+  --         lua = { "stylua" },
+  --         yaml = { "yamlfmt" },
+  --         markdown = { "prettier" },
+  --         json = { "prettier" },
+  --         python = { "isort", "black" },
+  --         C = { "clang-format" },
+  --       },
+  --       format_on_save = {
+  --         -- I recommend these options. See :help conform.format for details.
+  --         lsp_fallback = true,
+  --         async = false,
+  --         timeout_ms = 500,
+  --       },
+  --       log_level = vim.log.levels.ERROR,
+  --       -- Conform will notify you when a formatter errors
+  --       notify_on_error = true,
+  --       -- Custom formatters and changes to built-in formatters
+  --     }
+  --     vim.keymap.set({ "n", "v" }, "<leader>mp", function()
+  --       conform.format {
+  --         lsp_fallback = true,
+  --         async = false,
+  --         timeout_ms = 500,
+  --       }
+  --     end, { desc = "Format file or range (in visual mode)" })
+  --   end,
+  -- },
+  -- {
+  --   "mfussenegger/nvim-lint",
+  --   event = {
+  --     "BufReadPre",
+  --     "BufNewFile",
+  --   },
+  --   config = function()
+  --     local lint = require "lint"
+  --
+  --     lint.linters_by_ft = {
+  --       yaml = { "yamllint" },
+  --       markdown = { "markdownlint" },
+  --     }
+  --     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+  --
+  --     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+  --       group = lint_augroup,
+  --       callback = function()
+  --         lint.try_lint()
+  --       end,
+  --     })
+  --     vim.keymap.set("n", "<leader>ln", function()
+  --       lint.try_lint()
+  --     end, { desc = "Trigger linting for current file" })
+  --   end,
+  -- },
+  {
+  'Exafunction/codeium.vim',
+  config = function ()
+    -- Change '<C-g>' here to any keycode you like.
+    vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+    vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
+    vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
+    vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
+  end
+},
+
+
   {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,

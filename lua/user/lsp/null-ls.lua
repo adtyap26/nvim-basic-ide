@@ -20,7 +20,6 @@ null_ls.setup {
     formatting.black.with { extra_args = { "--fast" } },
     formatting.stylua,
     formatting.gofumpt,
-    formatting.yamlfmt,
     diagnostics.flake8,
   },
   -- you can reuse a shared lspconfig on_attach callback here

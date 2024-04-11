@@ -43,20 +43,18 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
   end,
 })
 
-
 -- optional
 
-
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-  pattern = { "*.ejs" },
-  callback = function()
-    vim.cmd "set filetype=html"
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  pattern = { "*.php" },
-  callback = function()
-    vim.cmd "set ft=php.html"
-  end,
-})
+-- vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+--   pattern = { "*.ejs" },
+--   callback = function()
+--     vim.cmd "set filetype=html"
+--   end,
+-- })
+--
+-- vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+--   pattern = { "*.php" },
+--   callback = function()
+--     vim.cmd "set ft=php.html"
+--   end,
+-- })
