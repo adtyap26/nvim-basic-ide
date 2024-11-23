@@ -24,6 +24,15 @@ require("lazy").setup {
       require "user.colorscheme"
     end,
   },
+  {
+    "akinsho/flutter-tools.nvim",
+    lazy = false,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "stevearc/dressing.nvim", -- optional for vim.ui.select
+    },
+    config = true,
+  },
   -- {
   --   "stevearc/conform.nvim",
   --   event = { "BufReadPre", "BufNewFile" },
@@ -85,17 +94,16 @@ require("lazy").setup {
   --     end, { desc = "Trigger linting for current file" })
   --   end,
   -- },
-  {
-  'Exafunction/codeium.vim',
-  config = function ()
-    -- Change '<C-g>' here to any keycode you like.
-    vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
-    vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
-    vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
-    vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
-  end
-},
-
+  --   {
+  --   'Exafunction/codeium.vim',
+  --   config = function ()
+  --     -- Change '<C-g>' here to any keycode you like.
+  --     vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+  --     vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
+  --     vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
+  --     vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
+  --   end
+  -- },
 
   {
     "ellisonleao/gruvbox.nvim",
@@ -118,6 +126,17 @@ require("lazy").setup {
     config = function()
       -- require "user.whichkey"
     end,
+  },
+  {
+    "mcauley-penney/visual-whitespace.nvim",
+    config = true,
+    opts = {
+      highlight = { link = "Visual" },
+      space_char = "·",
+      tab_char = "→",
+      nl_char = "↲",
+      cr_char = "←",
+    },
   },
   { "nvim-lua/plenary.nvim", commit = "9a0d3bf7b832818c042aaf30f692b081ddd58bd9", lazy = true },
   {
@@ -170,12 +189,6 @@ require("lazy").setup {
   },
   {
     "DaikyXendo/nvim-material-icon",
-    config = function()
-      require("nvim-material-icon").setup {
-        color_icons = true,
-        default = true,
-      }
-    end,
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
@@ -189,7 +202,6 @@ require("lazy").setup {
   },
   {
     "akinsho/bufferline.nvim",
-    commit = "c7492a76ce8218e3335f027af44930576b561013",
     config = function()
       require "user.bufferline"
     end,

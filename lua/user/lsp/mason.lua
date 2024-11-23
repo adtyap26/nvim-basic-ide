@@ -12,7 +12,7 @@ local servers = {
   "dockerls",
   "gopls",
   "clangd",
-  "marksman"
+  "marksman",
 }
 
 local settings = {

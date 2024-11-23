@@ -21,7 +21,6 @@ configs.setup {
     "yaml",
     "dockerfile",
     "vim",
-    "latex",
     "sxhkdrc",
   }, -- put the language you want in this array
   -- ensure_installed = "all", -- one of "all" or a list of languages
