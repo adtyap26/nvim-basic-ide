@@ -46,14 +46,15 @@ local servername = {
   -- Lsp server name .
   function()
     local msg = "No Active Lsp"
-    local buf_ft = vim.api.nvim_get_option_value("filetype", {})
     local clients = vim.lsp.get_clients()
     if next(clients) == nil then
       return msg
     end
     for _, client in ipairs(clients) do
-      local filetypes = client.config.name
-      if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+      local attached_buffers = vim.lsp.get_buffers_by_client_id(client.id)
+      local current_buf = vim.api.nvim_get_current_buf()
+
+      if vim.tbl_contains(attached_buffers, current_buf) then
         return client.name
       end
     end
