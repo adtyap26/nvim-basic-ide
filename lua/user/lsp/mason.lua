@@ -1,8 +1,13 @@
+if not vim._trim then
+  vim._trim = function(s)
+    return vim.trim(s) -- Use the existing vim.trim
+  end
+end
+
 local servers = {
   "lua_ls",
   "cssls",
   "emmet_ls",
-  "tsserver",
   "texlab",
   "pyright",
   "bashls",

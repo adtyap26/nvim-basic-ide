@@ -50,6 +50,7 @@ local servername = {
     if next(clients) == nil then
       return msg
     end
+
     for _, client in ipairs(clients) do
       local attached_buffers = vim.lsp.get_buffers_by_client_id(client.id)
       local current_buf = vim.api.nvim_get_current_buf()
