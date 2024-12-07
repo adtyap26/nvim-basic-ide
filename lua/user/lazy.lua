@@ -24,6 +24,10 @@ require("lazy").setup {
       require "user.colorscheme"
     end,
   },
+
+  {
+    "simrat39/inlay-hints.nvim",
+  },
   {
     "akinsho/flutter-tools.nvim",
     lazy = false,

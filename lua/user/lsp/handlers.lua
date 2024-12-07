@@ -101,4 +101,34 @@ M.on_attach = function(client, bufnr)
   illuminate.on_attach(client)
 end
 
+M.setup_gopls = function()
+  local lspconfig = require "lspconfig"
+  local ih = require "inlay-hints" -- Ensure this module is installed
+
+  lspconfig.gopls.setup {
+    on_attach = function(client, bufnr)
+      -- Call shared on_attach logic
+      M.on_attach(client, bufnr)
+
+      -- Call specific logic for gopls
+      if ih and ih.on_attach then
+        ih.on_attach(client, bufnr)
+      end
+    end,
+    settings = {
+      gopls = {
+        hints = {
+          assignVariableTypes = true,
+          compositeLiteralFields = true,
+          compositeLiteralTypes = true,
+          constantValues = true,
+          functionTypeParameters = true,
+          parameterNames = true,
+          rangeVariableTypes = true,
+        },
+      },
+    },
+  }
+end
+
 return M
