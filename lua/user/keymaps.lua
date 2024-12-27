@@ -55,7 +55,6 @@ keymap("n", "[c", function()
   require("treesitter-context").go_to_context()
 end, { silent = true })
 
-
 -- Better paste
 -- keymap("v", "p", '"_dP', opts)
 keymap("n", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', opts) -- paste without replaced by a cut
@@ -123,7 +122,7 @@ keymap("x", "<leader>x", ":MoveSelectionToNewFile<CR>", { desc = "[M]oving to a 
 
 --Terminal
 
-keymap("n", "<leader>th", "<cmd>ToggleTerm size=15 direction=horizontal<cr>", opts)
+keymap("n", "<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>", opts)
 keymap("n", "<leader>tv", "<cmd>ToggleTerm size=60 direction=vertical<cr>", opts)
 
 --Custom Terminal

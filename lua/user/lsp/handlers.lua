@@ -89,6 +89,14 @@ M.on_attach = function(client, bufnr)
     client.server_capabilities.documentFormattingProvider = false
   end
 
+  if client.name == "gopls" then
+    -- Add specific setup for gopls
+    local ih = require "inlay-hints" -- Ensure this module is installed
+    if ih and ih.on_attach then
+      ih.on_attach(client, bufnr)
+    end
+  end
+
   -- if client.name == "yamlls" then
   --   client.server_capabilities.documentFormattingProvider = false
   -- end
@@ -103,18 +111,8 @@ end
 
 M.setup_gopls = function()
   local lspconfig = require "lspconfig"
-  local ih = require "inlay-hints" -- Ensure this module is installed
-
   lspconfig.gopls.setup {
-    on_attach = function(client, bufnr)
-      -- Call shared on_attach logic
-      M.on_attach(client, bufnr)
-
-      -- Call specific logic for gopls
-      if ih and ih.on_attach then
-        ih.on_attach(client, bufnr)
-      end
-    end,
+    on_attach = M.on_attach,
     settings = {
       gopls = {
         hints = {

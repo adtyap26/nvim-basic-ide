@@ -24,7 +24,18 @@ require("lazy").setup {
       require "user.colorscheme"
     end,
   },
-
+  {
+    "maxmx03/solarized.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    config = function(_, opts)
+      vim.o.termguicolors = true
+      vim.o.background = "dark"
+      require("solarized").setup(opts)
+      vim.cmd.colorscheme "solarized"
+    end,
+  },
   {
     "simrat39/inlay-hints.nvim",
   },
@@ -268,27 +279,21 @@ require("lazy").setup {
     dependencies = {
       {
         "hrsh7th/cmp-nvim-lsp",
-        commit = "0e6b2ed705ddcff9738ec4ea838141654f12eeef",
       },
       {
         "hrsh7th/cmp-buffer",
-        commit = "3022dbc9166796b644a841a02de8dd1cc1d311fa",
       },
       {
         "hrsh7th/cmp-path",
-        commit = "91ff86cd9c29299a64f968ebb45846c485725f23",
       },
       {
         "hrsh7th/cmp-cmdline",
-        commit = "23c51b2a3c00f6abc4e922dbd7c3b9aca6992063",
       },
       {
         "saadparwaiz1/cmp_luasnip",
-        commit = "18095520391186d634a0045dacaa346291096566",
       },
       {
         "hrsh7th/cmp-nvim-lua",
-        commit = "f3491638d123cfd2c8048aefaf66d246ff250ca6",
       },
     },
     config = function()
@@ -319,7 +324,6 @@ require("lazy").setup {
     dependencies = {
       {
         "williamboman/mason-lspconfig.nvim",
-        commit = "93e58e100f37ef4fb0f897deeed20599dae9d128",
         lazy = true,
       },
     },
