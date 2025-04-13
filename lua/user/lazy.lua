@@ -330,12 +330,8 @@ require("lazy").setup {
   },
 
   {
-    "jose-elias-alvarez/null-ls.nvim",
-    event = "BufReadPre",
-    commit = "60b4a7167c79c7d04d1ff48b55f2235bf58158a7",
-    config = function()
-      require "user.lsp.null-ls"
-    end,
+    "stevearc/conform.nvim",
+    opts = {},
   },
 
   {

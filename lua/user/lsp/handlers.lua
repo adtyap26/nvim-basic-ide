@@ -114,19 +114,51 @@ M.setup_gopls = function()
   lspconfig.gopls.setup {
     on_attach = M.on_attach,
     settings = {
-      gopls = {
-        hints = {
-          assignVariableTypes = true,
-          compositeLiteralFields = true,
-          compositeLiteralTypes = true,
-          constantValues = true,
-          functionTypeParameters = true,
-          parameterNames = true,
-          rangeVariableTypes = true,
-        },
+      gofumpt = true,
+      codelenses = {
+        gc_details = false,
+        generate = true,
+        regenerate_cgo = true,
+        run_govulncheck = true,
+        test = true,
+        tidy = true,
+        upgrade_dependency = true,
+        vendor = true,
+      },
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
       },
     },
   }
 end
+
+require("conform").setup {
+  formatters_by_ft = {
+    lua = { "stylua" },
+    python = { "isort", "black" },
+    javascript = { { "prettierd", "prettier" } },
+    markdown = { "prettier" }, -- or "prettierd" if you have it installed
+    go = { "gofumpt", "goimports" }, -- or "golines", "gofmt"
+    sh = { "shfmt" }, -- for Bash or POSIX shell scripts
+  },
+
+  format_on_save = {
+    timeout_ms = 500,
+    lsp_fallback = true, -- this should be `lsp_fallback` not `lsp_format`
+  },
+}
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function(args)
+    require("conform").format { bufnr = args.buf }
+  end,
+})
 
 return M
