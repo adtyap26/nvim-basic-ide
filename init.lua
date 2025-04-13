@@ -1,3 +1,7 @@
+if vim.deprecate ~= nil then
+  vim.deprecate = function() end
+end
+
 require "user.options"
 require "user.keymaps"
 require "user.lazy"

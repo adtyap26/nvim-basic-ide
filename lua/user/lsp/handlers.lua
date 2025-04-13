@@ -71,35 +71,23 @@ local function lsp_keymaps(bufnr)
   keymap(bufnr, "n", "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 end
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "go",
-  callback = function()
-    -- Ensure gopls is started for Go files
-    vim.lsp.start {
-      name = "gopls",
-      cmd = { "gopls" }, -- Ensure 'gopls' is in your PATH
-      root_dir = vim.fs.dirname(vim.fs.find({ ".git", "go.mod" }, { upward = true })[1]), -- Find the root directory
-      capabilities = require("cmp_nvim_lsp").default_capabilities(), -- Use your existing capabilities setup
-    }
-  end,
-})
-
 M.on_attach = function(client, bufnr)
   if client.name == "lua_ls" then
     client.server_capabilities.documentFormattingProvider = false
   end
 
-  if client.name == "gopls" then
-    -- Add specific setup for gopls
-    local ih = require "inlay-hints" -- Ensure this module is installed
-    if ih and ih.on_attach then
-      ih.on_attach(client, bufnr)
-    end
-  end
+  -- if client.name == "gopls" then
+  --   -- Add specific setup for gopls
+  --   local ih = require "inlay-hints" -- Ensure this module is installed
+  --   if ih and ih.on_attach then
+  --     ih.on_attach(client, bufnr)
+  --   end
+  -- end
 
   -- if client.name == "yamlls" then
   --   client.server_capabilities.documentFormattingProvider = false
   -- end
+  --
 
   lsp_keymaps(bufnr)
   local status_ok, illuminate = pcall(require, "illuminate")
@@ -111,28 +99,35 @@ end
 
 M.setup_gopls = function()
   local lspconfig = require "lspconfig"
+  local ih = require "inlay-hints"
+
   lspconfig.gopls.setup {
-    on_attach = M.on_attach,
+    on_attach = function(client, bufnr)
+      M.on_attach(client, bufnr)
+      ih.on_attach(client, bufnr)
+    end,
     settings = {
-      gofumpt = true,
-      codelenses = {
-        gc_details = false,
-        generate = true,
-        regenerate_cgo = true,
-        run_govulncheck = true,
-        test = true,
-        tidy = true,
-        upgrade_dependency = true,
-        vendor = true,
-      },
-      hints = {
-        assignVariableTypes = true,
-        compositeLiteralFields = true,
-        compositeLiteralTypes = true,
-        constantValues = true,
-        functionTypeParameters = true,
-        parameterNames = true,
-        rangeVariableTypes = true,
+      gopls = {
+        gofumpt = true,
+        codelenses = {
+          gc_details = false,
+          generate = true,
+          regenerate_cgo = true,
+          run_govulncheck = true,
+          test = true,
+          tidy = true,
+          upgrade_dependency = true,
+          vendor = true,
+        },
+        hints = {
+          assignVariableTypes = true,
+          compositeLiteralFields = true,
+          compositeLiteralTypes = true,
+          constantValues = true,
+          functionTypeParameters = true,
+          parameterNames = true,
+          rangeVariableTypes = true,
+        },
       },
     },
   }

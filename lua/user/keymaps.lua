@@ -79,7 +79,7 @@ keymap("v", ">", ">gv", opts)
 
 -- Plugins --
 -- NvimTree
-keymap("n", "<leader>e", ":NvimTreeToggle<CR>", opts)
+keymap("n", "<leader>e", ":Explore<CR>", opts)
 
 -- Telescope
 keymap("n", "<leader>ff", ":Telescope find_files<CR>", { desc = "[F]ind [F]iles" })

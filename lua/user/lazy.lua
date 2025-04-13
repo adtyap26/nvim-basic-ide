@@ -17,7 +17,6 @@ vim.g.mapleader = " " -- make sure to set `mapleader` before lazy so your mappin
 require("lazy").setup {
   {
     "folke/tokyonight.nvim",
-    commit = "e52c41314e83232840d6970e6b072f9fba242eb9",
     lazy = false, -- make sure we load this during startup if it is your main colorscheme
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
@@ -37,9 +36,6 @@ require("lazy").setup {
     end,
   },
   {
-    "simrat39/inlay-hints.nvim",
-  },
-  {
     "akinsho/flutter-tools.nvim",
     lazy = false,
     dependencies = {
@@ -48,77 +44,15 @@ require("lazy").setup {
     },
     config = true,
   },
-  -- {
-  --   "stevearc/conform.nvim",
-  --   event = { "BufReadPre", "BufNewFile" },
-  --   config = function()
-  --     local conform = require "conform"
-  --     conform.setup {
-  --       formatters_by_ft = {
-  --         go = { "gofumpt" },
-  --         lua = { "stylua" },
-  --         yaml = { "yamlfmt" },
-  --         markdown = { "prettier" },
-  --         json = { "prettier" },
-  --         python = { "isort", "black" },
-  --         C = { "clang-format" },
-  --       },
-  --       format_on_save = {
-  --         -- I recommend these options. See :help conform.format for details.
-  --         lsp_fallback = true,
-  --         async = false,
-  --         timeout_ms = 500,
-  --       },
-  --       log_level = vim.log.levels.ERROR,
-  --       -- Conform will notify you when a formatter errors
-  --       notify_on_error = true,
-  --       -- Custom formatters and changes to built-in formatters
-  --     }
-  --     vim.keymap.set({ "n", "v" }, "<leader>mp", function()
-  --       conform.format {
-  --         lsp_fallback = true,
-  --         async = false,
-  --         timeout_ms = 500,
-  --       }
-  --     end, { desc = "Format file or range (in visual mode)" })
-  --   end,
-  -- },
-  -- {
-  --   "mfussenegger/nvim-lint",
-  --   event = {
-  --     "BufReadPre",
-  --     "BufNewFile",
-  --   },
-  --   config = function()
-  --     local lint = require "lint"
-  --
-  --     lint.linters_by_ft = {
-  --       yaml = { "yamllint" },
-  --       markdown = { "markdownlint" },
-  --     }
-  --     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-  --
-  --     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-  --       group = lint_augroup,
-  --       callback = function()
-  --         lint.try_lint()
-  --       end,
-  --     })
-  --     vim.keymap.set("n", "<leader>ln", function()
-  --       lint.try_lint()
-  --     end, { desc = "Trigger linting for current file" })
-  --   end,
-  -- },
-  --   {
-  --   'Exafunction/codeium.vim',
-  --   config = function ()
-  --     -- Change '<C-g>' here to any keycode you like.
-  --     vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
-  --     vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
-  --     vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
-  --     vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
-  --   end
-  -- },
+  {
+
+    "MysticalDevil/inlay-hints.nvim",
+    event = "LspAttach",
+    dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require("inlay-hints").setup()
+    end,
+  },
 
   {
     "ellisonleao/gruvbox.nvim",
@@ -128,15 +62,13 @@ require("lazy").setup {
   },
   {
     "lukas-reineke/indent-blankline.nvim",
-    commit = "8299fe7703dfff4b1752aeed271c3b95281a952d",
-    event = "BufReadPre",
-    config = function()
-      require "user.indentline"
-    end,
+    main = "ibl",
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = {},
   },
   {
     "folke/which-key.nvim",
-    commit = "5224c261825263f46f6771f1b644cae33cd06995",
     event = "VeryLazy",
     config = function()
       -- require "user.whichkey"
@@ -153,10 +85,10 @@ require("lazy").setup {
       cr_char = "←",
     },
   },
-  { "nvim-lua/plenary.nvim", commit = "9a0d3bf7b832818c042aaf30f692b081ddd58bd9", lazy = true },
+  { "nvim-lua/plenary.nvim", lazy = true },
+
   {
     "windwp/nvim-autopairs",
-    commit = "0e065d423f9cf649e1d92443c939a4b5073b6768",
     event = "InsertEnter",
     config = function()
       require "user.autopairs"
@@ -164,7 +96,6 @@ require("lazy").setup {
   },
   {
     "numToStr/Comment.nvim",
-    commit = "eab2c83a0207369900e92783f56990808082eac2",
     event = "BufRead",
     config = function()
       require "user.comment"
@@ -172,13 +103,11 @@ require("lazy").setup {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    -- commit = "d3a68725e8349212a359d1914fc6e86ff31e4142",
     event = "BufReadPost",
     dependencies = {
       {
         "JoosepAlviste/nvim-ts-context-commentstring",
         event = "VeryLazy",
-        commit = "a0f89563ba36b3bacd62cf967b46beb4c2c29e52",
       },
       {
         "kyazdani42/nvim-web-devicons",
@@ -209,13 +138,6 @@ require("lazy").setup {
     "nvim-treesitter/nvim-treesitter-context",
   },
   {
-    "kyazdani42/nvim-tree.lua",
-    commit = "59e65d88db177ad1e6a8cffaafd4738420ad20b6",
-    config = function()
-      require "user.nvim-tree"
-    end,
-  },
-  {
     "akinsho/bufferline.nvim",
     config = function()
       require "user.bufferline"
@@ -223,18 +145,15 @@ require("lazy").setup {
   },
   {
     "moll/vim-bbye",
-    commit = "25ef93ac5a87526111f43e5110675032dbcacf56",
   },
   {
     "nvim-lualine/lualine.nvim",
-    commit = "0050b308552e45f7128f399886c86afefc3eb988",
     config = function()
       require "user.lualine"
     end,
   },
   {
     "akinsho/toggleterm.nvim",
-    commit = "19aad0f41f47affbba1274f05e3c067e6d718e1e",
     event = "VeryLazy",
     config = function()
       require "user.toggleterm"
@@ -242,13 +161,11 @@ require("lazy").setup {
   },
   {
     "nvim-telescope/telescope.nvim",
-    -- commit = "203bf5609137600d73e8ed82703d6b0e320a5f36",
     event = "Bufenter",
     cmd = { "Telescope" },
     dependencies = {
       {
         "ahmedkhalf/project.nvim",
-        -- commit = "685bc8e3890d2feb07ccf919522c97f7d33b94e4",
         config = function()
           require "user.project"
         end,
@@ -267,11 +184,9 @@ require("lazy").setup {
   },
   {
     "lunarvim/darkplus.nvim",
-    commit = "1826879d9cb14e5d93cd142d19f02b23840408a6",
   },
   {
     "hrsh7th/nvim-cmp",
-    commit = "cfafe0a1ca8933f7b7968a287d39904156f2c57d",
     event = {
       "InsertEnter",
       "CmdlineEnter",
@@ -302,11 +217,9 @@ require("lazy").setup {
   },
   {
     "L3MON4D3/LuaSnip",
-    commit = "9bff06b570df29434a88f9c6a9cea3b21ca17208",
     event = "InsertEnter",
     dependencies = {
       "rafamadriz/friendly-snippets",
-      commit = "a6f7a1609addb4e57daa6bedc300f77f8d225ab7",
     },
   },
   {
@@ -315,7 +228,6 @@ require("lazy").setup {
   },
   {
     "williamboman/mason.nvim",
-    commit = "4546dec8b56bc56bc1d81e717e4a935bc7cd6477",
     cmd = "Mason",
     event = "BufReadPre",
     config = function()
@@ -336,58 +248,11 @@ require("lazy").setup {
 
   {
     "RRethy/vim-illuminate",
-    commit = "d6ca7f77eeaf61b3e6ce9f0e5a978d606df44298",
     event = "VeryLazy",
     config = function()
       require "user.illuminate"
     end,
   },
-  {
-    "lewis6991/gitsigns.nvim",
-    commit = "ec4742a7eebf68bec663041d359b95637242b5c3",
-    event = "BufReadPre",
-    config = function()
-      require "user.gitsigns"
-    end,
-  },
-  {
-    "mfussenegger/nvim-dap",
-    commit = "6b12294a57001d994022df8acbe2ef7327d30587",
-    event = "VeryLazy",
-    config = function()
-      require "user.dap"
-    end,
-  },
-  {
-    "rcarriga/nvim-dap-ui",
-    commit = "1cd4764221c91686dcf4d6b62d7a7b2d112e0b13",
-    event = "VeryLazy",
-    config = function()
-      require "user.dapui"
-    end,
-  },
-  {
-    "ravenxrz/DAPInstall.nvim",
-    commit = "8798b4c36d33723e7bba6ed6e2c202f84bb300de",
-    lazy = true,
-    config = function()
-      require("dap_install").setup {}
-      require("dap_install").config("python", {})
-    end,
-  },
-  {
-    "theHamsta/nvim-dap-virtual-text",
-    dependencies = {
-      {
-        "mfussenegger/nvim-dap",
-        "nvim-treesitter/nvim-treesitter",
-      },
-    },
-    config = function()
-      require("nvim-dap-virtual-text").setup()
-    end,
-  },
-
   {
     "chrisgrieser/nvim-genghis",
     dependencies = {
