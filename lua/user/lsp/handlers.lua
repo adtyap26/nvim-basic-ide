@@ -11,11 +11,10 @@ M.capabilities = cmp_nvim_lsp.default_capabilities(M.capabilities)
 
 M.setup = function()
   local signs = {
-
-    { name = "DiagnosticSignError", text = "" },
-    { name = "DiagnosticSignWarn", text = "" },
-    { name = "DiagnosticSignHint", text = "" },
-    { name = "DiagnosticSignInfo", text = "" },
+    { name = "DiagnosticSignError", text = "" },
+    { name = "DiagnosticSignWarn", text = "" },
+    { name = "DiagnosticSignHint", text = "" },
+    { name = "DiagnosticSignInfo", text = "" },
   }
 
   for _, sign in ipairs(signs) do
@@ -42,13 +41,18 @@ M.setup = function()
 
   vim.diagnostic.config(config)
 
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = "rounded",
-  })
+  -- Only set up these handlers once to prevent duplicates
+  if not M._handlers_setup then
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+      border = "rounded",
+    })
 
-  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = "rounded",
-  })
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+      border = "rounded",
+    })
+
+    M._handlers_setup = true
+  end
 end
 
 local function lsp_keymaps(bufnr)
@@ -76,25 +80,55 @@ M.on_attach = function(client, bufnr)
     client.server_capabilities.documentFormattingProvider = false
   end
 
-  -- if client.name == "gopls" then
-  --   -- Add specific setup for gopls
-  --   local ih = require "inlay-hints" -- Ensure this module is installed
-  --   if ih and ih.on_attach then
-  --     ih.on_attach(client, bufnr)
-  --   end
-  -- end
-
-  -- if client.name == "yamlls" then
-  --   client.server_capabilities.documentFormattingProvider = false
-  -- end
-  --
-
   lsp_keymaps(bufnr)
   local status_ok, illuminate = pcall(require, "illuminate")
   if not status_ok then
     return
   end
   illuminate.on_attach(client)
+end
+
+M.setup_clangd = function()
+  local lspconfig = require "lspconfig"
+
+  lspconfig.clangd.setup {
+    on_attach = function(client, bufnr)
+      M.on_attach(client, bufnr)
+
+      -- Add inlay hints with error handling
+      if client.supports_method "textDocument/inlayHint" then
+        pcall(function()
+          vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+        end)
+      end
+    end,
+    capabilities = M.capabilities,
+    cmd = {
+      "clangd",
+      "--background-index",
+      "--clang-tidy",
+      "--header-insertion=iwyu",
+      "--completion-style=detailed",
+      "--function-arg-placeholders",
+      "--fallback-style=llvm",
+    },
+    init_options = {
+      usePlaceholders = true,
+      completeUnimported = true,
+      clangdFileStatus = true,
+    },
+    settings = {
+      clangd = {
+        InlayHints = {
+          Designators = true,
+          Enabled = true,
+          ParameterNames = true,
+          DeducedTypes = true,
+        },
+        fallbackFlags = { "-std=c++17" },
+      },
+    },
+  }
 end
 
 M.setup_gopls = function()
@@ -133,20 +167,88 @@ M.setup_gopls = function()
   }
 end
 
+M.setup_rubylsp = function()
+  local lspconfig = require "lspconfig"
+  local util = require "lspconfig.util"
+
+  lspconfig.ruby_lsp.setup {
+    cmd = { vim.fn.expand "~/.rbenv/shims/ruby-lsp" },
+    filetypes = { "ruby" },
+    root_dir = util.root_pattern("Gemfile", ".git"),
+    on_attach = function(client, bufnr)
+      print("ruby-lsp attached to buffer", bufnr)
+    end,
+    init_options = {
+      enabledFeatures = {
+        "codeActions",
+        "diagnostics",
+        "documentHighlights",
+        "documentLink",
+        "documentSymbols",
+        "foldingRanges",
+        "formatting",
+        "hover",
+        "inlayHints",
+        "onTypeFormatting",
+        "selectionRanges",
+        "semanticHighlighting",
+        "completion",
+        "codeLens",
+        "definition",
+        "workspaceSymbols",
+        "signatureHelp",
+        "typeHierarchy",
+      },
+    },
+  }
+end
+
+-- sql
+M.setup_sqlls = function()
+  local lspconfig = require "lspconfig"
+
+  lspconfig.sqls.setup {
+    on_attach = M.on_attach,
+    capabilities = M.capabilities,
+    cmd = { "sqls" },
+    filetypes = { "sql" },
+    root_dir = function()
+      return vim.loop.cwd()
+    end,
+    settings = {
+      sqls = {
+        connections = {
+          {
+            driver = "mysql",
+            -- dataSourceName = "root:root@tcp(127.0.0.1:3306)/database",
+          },
+        },
+      },
+    },
+  }
+end
+
 require("conform").setup {
   formatters_by_ft = {
     lua = { "stylua" },
     python = { "isort", "black" },
-    javascript = { { "prettierd", "prettier" } },
-    markdown = { "prettier" }, -- or "prettierd" if you have it installed
-    go = { "gofumpt", "goimports" }, -- or "golines", "gofmt"
-    sh = { "shfmt" }, -- for Bash or POSIX shell scripts
+    javascript = { "prettierd", "prettier" },
+    markdown = { "prettier" },
+    go = { "gofumpt", "goimports" },
+    sh = { "shfmt" },
+    sql = { "sql_formatter" },
+    ruby = { "rubyfmt" },
   },
 
   format_on_save = {
     timeout_ms = 500,
-    lsp_fallback = true, -- this should be `lsp_fallback` not `lsp_format`
+    lsp_fallback = true,
+    stop_after_first = true,
   },
+}
+
+require("conform").formatters.sql_formatter = {
+  prepend_args = { "-c", vim.fn.expand "~/.config/nvim/lua/user/lsp/settings/sql_formatter.json" },
 }
 
 vim.api.nvim_create_autocmd("BufWritePre", {

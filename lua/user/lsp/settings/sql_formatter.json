@@ -1,0 +1,12 @@
+{
+    "language": "sql",
+    "tabWidth": 2,
+    "useTabs": false,
+    "keywordCase": "upper",
+    "indentStyle": "standard",
+    "expressionWidth": 120,
+    "linesBetweenQueries": 1,
+    "denseOperators": false,
+    "newlineBeforeSemicolon": false,
+    "maxColumnLength": 60
+}

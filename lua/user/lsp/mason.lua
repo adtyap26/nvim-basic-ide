@@ -12,11 +12,11 @@ local servers = {
   "pyright",
   "bashls",
   "jsonls",
-  "sqlls",
   "yamlls",
   "dockerls",
   "gopls",
   "clangd",
+  "ts_ls",
 }
 
 local settings = {
@@ -44,7 +44,6 @@ if not lspconfig_status_ok then
 end
 
 local opts = {}
-
 for _, server in pairs(servers) do
   opts = {
     on_attach = require("user.lsp.handlers").on_attach,
@@ -59,4 +58,6 @@ for _, server in pairs(servers) do
   end
 
   lspconfig[server].setup(opts)
+
+  ::continue::
 end

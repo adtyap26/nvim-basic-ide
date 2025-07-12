@@ -46,6 +46,10 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
+keymap("n", "<S-q>", ":bdelete<CR>", opts)
+
+-- Toggle spell check
+keymap("n", "<leader>sp", ":set spell!<CR>", opts)
 
 -- Clear highlights
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
@@ -69,7 +73,7 @@ keymap("n", "<leader>pf", '<cmd>!pandoc --pdf-engine=weasyprint $* "%" -f markdo
 
 -- Insert Mode --
 
--- Press jk fast to enter
+-- Press jk fast to enter normal_mode
 keymap("i", "jk", "<ESC>", opts)
 
 -- Visual mode --
