@@ -86,7 +86,12 @@ keymap("v", ">", ">gv", opts)
 keymap("n", "<leader>e", ":Explore<CR>", opts)
 
 -- Telescope
-keymap("n", "<leader>ff", ":Telescope find_files<CR>", { desc = "[F]ind [F]iles" })
+keymap(
+  "n",
+  "<leader>ff",
+  "<cmd>lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>",
+  { desc = "[F]ind [F]iles" }
+)
 keymap("n", "<leader>fg", ":Telescope live_grep<CR>", { desc = "[F]ind by [G]rep" })
 keymap("n", "<leader>ht", ":Telescope help_tags<CR>", { desc = "[S]earch [H]elp" })
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)
@@ -128,6 +133,8 @@ keymap("x", "<leader>x", ":MoveSelectionToNewFile<CR>", { desc = "[M]oving to a 
 
 keymap("n", "<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>", opts)
 keymap("n", "<leader>tv", "<cmd>ToggleTerm size=60 direction=vertical<cr>", opts)
+-- Exit terminal mode with Esc
+keymap("t", "<Esc>", [[<C-\><C-n>]], opts)
 
 --Custom Terminal
 -- lazyGit

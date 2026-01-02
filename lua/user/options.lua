@@ -41,3 +41,4 @@ vim.opt.whichwrap:append "<,>,[,],h,l" -- keys allowed to move to the previous/n
 vim.opt.iskeyword:append "-" -- treats words with `-` as single words
 vim.opt.list = true
 vim.opt.listchars = { tab = "| " }
+vim.opt.autochdir = true -- always change directory into cwd automatically

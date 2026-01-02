@@ -1,41 +1,43 @@
 if not vim._trim then
-  vim._trim = function(s)
-    return vim.trim(s) -- Use the existing vim.trim
-  end
+    vim._trim = function(s)
+        return vim.trim(s) -- Use the existing vim.trim
+    end
 end
 
 local servers = {
-  "lua_ls",
-  "cssls",
-  "emmet_ls",
-  "texlab",
-  "pyright",
-  "bashls",
-  "jsonls",
-  "yamlls",
-  "dockerls",
-  "gopls",
-  "clangd",
-  "ts_ls",
+    "lua_ls",
+    "cssls",
+    "emmet_ls",
+    "texlab",
+    "pyright",
+    "bashls",
+    "jsonls",
+    "yamlls",
+    "dockerls",
+    "gopls",
+    "clangd",
+    "ts_ls",
+    "terraformls",
 }
 
 local settings = {
-  ui = {
-    border = "none",
-    icons = {
-      package_installed = "◍",
-      package_pending = "◍",
-      package_uninstalled = "◍",
+    ui = {
+        border = "none",
+        icons = {
+            package_installed = "◍",
+            package_pending = "◍",
+            package_uninstalled = "◍",
+        },
     },
-  },
-  log_level = vim.log.levels.INFO,
-  max_concurrent_installers = 4,
+    log_level = vim.log.levels.INFO,
+    max_concurrent_installers = 4,
 }
 
 require("mason").setup(settings)
 require("mason-lspconfig").setup {
-  ensure_installed = servers,
-  automatic_installation = true,
+    ensure_installed = servers,
+    automatic_installation = false, -- Disable auto-install, we handle it manually below
+    automatic_enable = false
 }
 
 local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")

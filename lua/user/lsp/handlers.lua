@@ -32,7 +32,7 @@ M.setup = function()
     float = {
       focusable = true,
       style = "minimal",
-      border = "rounded",
+      border = "double",
       source = "always",
       header = "",
       prefix = "",
@@ -44,11 +44,12 @@ M.setup = function()
   -- Only set up these handlers once to prevent duplicates
   if not M._handlers_setup then
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-      border = "rounded",
+      border = "single",
+      max_width = 80,
     })
 
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-      border = "rounded",
+      border = "double",
     })
 
     M._handlers_setup = true
@@ -56,6 +57,10 @@ M.setup = function()
 end
 
 local function lsp_keymaps(bufnr)
+  if vim.b[bufnr].lsp_keymaps_set then
+    return
+  end
+
   local opts = { noremap = true, silent = true }
   local keymap = vim.api.nvim_buf_set_keymap
   keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
@@ -73,6 +78,8 @@ local function lsp_keymaps(bufnr)
   keymap(bufnr, "n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
   keymap(bufnr, "n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
   keymap(bufnr, "n", "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+
+  vim.b[bufnr].lsp_keymaps_set = true
 end
 
 M.on_attach = function(client, bufnr)
@@ -203,30 +210,42 @@ M.setup_rubylsp = function()
   }
 end
 
--- sql
-M.setup_sqlls = function()
+M.setup_terraformls = function()
   local lspconfig = require "lspconfig"
 
-  lspconfig.sqls.setup {
+  lspconfig.terraformls.setup {
     on_attach = M.on_attach,
     capabilities = M.capabilities,
-    cmd = { "sqls" },
-    filetypes = { "sql" },
-    root_dir = function()
-      return vim.loop.cwd()
-    end,
-    settings = {
-      sqls = {
-        connections = {
-          {
-            driver = "mysql",
-            -- dataSourceName = "root:root@tcp(127.0.0.1:3306)/database",
-          },
-        },
-      },
-    },
+    cmd = { "terraform-ls", "serve" },
+    filetypes = { "terraform", "tf" },
+    root_dir = require("lspconfig.util").root_pattern(".terraform", ".git", "terraform.tfstate"),
   }
 end
+
+-- -- sql
+-- M.setup_sqlls = function()
+--   local lspconfig = require "lspconfig"
+--
+--   lspconfig.sqls.setup {
+--     on_attach = M.on_attach,
+--     capabilities = M.capabilities,
+--     cmd = { "sqls" },
+--     filetypes = { "sql" },
+--     root_dir = function()
+--       return vim.loop.cwd()
+--     end,
+--     settings = {
+--       sqls = {
+--         connections = {
+--           {
+--             driver = "mysql",
+--             -- dataSourceName = "root:root@tcp(127.0.0.1:3306)/database",
+--           },
+--         },
+--       },
+--     },
+--   }
+-- end
 
 require("conform").setup {
   formatters_by_ft = {
@@ -247,15 +266,14 @@ require("conform").setup {
   },
 }
 
-require("conform").formatters.sql_formatter = {
-  prepend_args = { "-c", vim.fn.expand "~/.config/nvim/lua/user/lsp/settings/sql_formatter.json" },
-}
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*",
-  callback = function(args)
-    require("conform").format { bufnr = args.buf }
-  end,
-})
+require("conform").formatters.sql_formatter = V
+prepend_args =
+  { "-c", vim.fn.expand "~/.config/nvim/lua/user/lsp/settings/sql_formatter.json" },
+  vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*",
+    callback = function(args)
+      require("conform").format { bufnr = args.buf }
+    end,
+  })
 
 return M
