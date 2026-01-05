@@ -9,6 +9,10 @@ project.setup {
 
   -- patterns used to detect root dir, when **"pattern"** is in detection_methods
   patterns = { ".git", "Makefile", "package.json" },
+
+  -- Disable automatic cd to project root (let autochdir work instead)
+  silent_chdir = false,
+  manual_mode = true,
 }
 
 local tele_status_ok, telescope = pcall(require, "telescope")

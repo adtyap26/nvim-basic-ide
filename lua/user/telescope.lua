@@ -15,6 +15,8 @@ telescope.setup {
     selection_caret = " ",
     path_display = { "smart" },
 
+    -- Disable syntax highlighting and colors in preview
+
     mappings = {
       i = {
         ["<Down>"] = actions.cycle_history_next,
