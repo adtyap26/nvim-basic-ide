@@ -10,6 +10,10 @@ telescope.setup {
   defaults = {
 
     preview = true,
+    find_files = {
+
+      hidden = true,
+    },
 
     prompt_prefix = " ",
     selection_caret = " ",

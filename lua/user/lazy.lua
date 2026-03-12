@@ -35,6 +35,15 @@ require("lazy").setup {
       vim.cmd.colorscheme "solarized"
     end,
   },
+  -- the best plugins try to run here..
+  {
+    "adtyap26/align-regexp-vim",
+    config = function()
+      -- No setup() required. The :Align command is registered automatically.
+      -- Add keymaps here if desired (see Keymap Examples below).
+    end,
+  },
+
   {
     "akinsho/flutter-tools.nvim",
     lazy = false,
@@ -249,7 +258,6 @@ require("lazy").setup {
       },
     },
   },
-
   {
     "stevearc/conform.nvim",
     opts = {},
@@ -297,7 +305,6 @@ require("lazy").setup {
   --     require "user.guihua"
   --   end,
   -- },
-
   {
     "folke/zen-mode.nvim",
     opts = {

@@ -26,6 +26,7 @@ keymap("n", "<C-q>", "<cmd>q!<CR>", opts) --force quit without save
 -- keymap("v", "p", '"_dP', opts)
 keymap("n", "<leader>cd", "<cmd>cd %:p:h<CR>", opts) --change root directory
 
+
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)
 keymap("n", "<C-j>", "<C-w>j", opts)
@@ -92,6 +93,13 @@ keymap(
   "<cmd>lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>",
   { desc = "[F]ind [F]iles" }
 )
+
+keymap("n", "<leader>ps", function()
+  require("telescope.builtin").grep_string({
+    search = vim.fn.input("Grep > "),
+  })
+end)
+
 keymap("n", "<leader>fg", ":Telescope live_grep<CR>", { desc = "[F]ind by [G]rep" })
 keymap("n", "<leader>ht", ":Telescope help_tags<CR>", { desc = "[S]earch [H]elp" })
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)

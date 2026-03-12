@@ -266,14 +266,19 @@ require("conform").setup {
   },
 }
 
-require("conform").formatters.sql_formatter = V
-prepend_args =
-  { "-c", vim.fn.expand "~/.config/nvim/lua/user/lsp/settings/sql_formatter.json" },
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*",
-    callback = function(args)
-      require("conform").format { bufnr = args.buf }
-    end,
-  })
+require("conform").formatters.sql_formatter = {
+  prepend_args = { "-c", vim.fn.expand "~/.config/nvim/lua/user/lsp/settings/sql_formatter.json" },
+}
+
+require("conform").formatters.isort = {
+  command = vim.fn.stdpath("data") .. "/mason/bin/isort",
+}
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function(args)
+    require("conform").format { bufnr = args.buf }
+  end,
+})
 
 return M
