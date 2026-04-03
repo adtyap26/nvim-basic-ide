@@ -35,10 +35,22 @@ dashboard.section.buttons.val = {
   dashboard.button("q", "󰿅 " .. " Quit", ":qa<CR>"),
 }
 local function footer()
-  return "https://github.com/adtyap26"
+  local stats = require("lazy").stats()
+  local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+  return "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms"
 end
 
 dashboard.section.footer.val = footer()
+
+vim.api.nvim_create_autocmd("UIEnter", {
+  once = true,
+  callback = function()
+    dashboard.section.footer.val = footer()
+    if vim.bo.filetype == "alpha" then
+      require("alpha").redraw()
+    end
+  end,
+})
 
 dashboard.section.footer.opts.hl = "Type"
 dashboard.section.header.opts.hl = "Include"
