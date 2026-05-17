@@ -252,3 +252,12 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
 --     vim.cmd "set ft=php.html"
 --   end,
 -- })
+
+-- Disable built-in autocomplete in prompt/special buffers
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "TelescopePrompt", "DressingInput", "prompt" },
+  callback = function()
+    vim.opt_local.autocomplete = false
+    vim.opt_local.complete = {}
+  end,
+})

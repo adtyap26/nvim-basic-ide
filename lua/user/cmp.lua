@@ -1,7 +1,6 @@
-local cmp_status_ok, cmp = pcall(require, "cmp")
-if not cmp_status_ok then
-  return
-end
+-- nvim-cmp removed in favour of built-in completion (0.12+)
+-- vim.opt.autocomplete = true + vim.lsp.completion.enable() in handlers.lua
+return
 
 local snip_status_ok, luasnip = pcall(require, "luasnip")
 if not snip_status_ok then

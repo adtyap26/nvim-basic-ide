@@ -1,30 +1,18 @@
 local M = {}
 
-local status_cmp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if not status_cmp_ok then
-  return
-end
-
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
 M.capabilities.textDocument.completion.completionItem.snippetSupport = true
-M.capabilities = cmp_nvim_lsp.default_capabilities(M.capabilities)
 
 M.setup = function()
-  local signs = {
-    { name = "DiagnosticSignError", text = "" },
-    { name = "DiagnosticSignWarn", text = "" },
-    { name = "DiagnosticSignHint", text = "" },
-    { name = "DiagnosticSignInfo", text = "" },
-  }
-
-  for _, sign in ipairs(signs) do
-    vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
-  end
-
   local config = {
-    virtual_text = false, -- disable virtual text
+    virtual_text = false,
     signs = {
-      active = signs, -- show signs
+      text = {
+        [vim.diagnostic.severity.ERROR] = "",
+        [vim.diagnostic.severity.WARN] = "",
+        [vim.diagnostic.severity.HINT] = "",
+        [vim.diagnostic.severity.INFO] = "",
+      },
     },
     update_in_insert = true,
     underline = true,
@@ -32,7 +20,6 @@ M.setup = function()
     float = {
       focusable = true,
       style = "minimal",
-      border = "double",
       source = "always",
       header = "",
       prefix = "",
@@ -44,12 +31,7 @@ M.setup = function()
   -- Only set up these handlers once to prevent duplicates
   if not M._handlers_setup then
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-      border = "single",
       max_width = 80,
-    })
-
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-      border = "double",
     })
 
     M._handlers_setup = true
@@ -88,6 +70,8 @@ M.on_attach = function(client, bufnr)
   end
 
   lsp_keymaps(bufnr)
+  vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
+
   local status_ok, illuminate = pcall(require, "illuminate")
   if not status_ok then
     return
@@ -140,12 +124,13 @@ end
 
 M.setup_gopls = function()
   local lspconfig = require "lspconfig"
-  local ih = require "inlay-hints"
 
   lspconfig.gopls.setup {
     on_attach = function(client, bufnr)
       M.on_attach(client, bufnr)
-      ih.on_attach(client, bufnr)
+      if client.supports_method "textDocument/inlayHint" then
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+      end
     end,
     settings = {
       gopls = {

@@ -12,7 +12,8 @@ local servers = {
     "pyright",
     "bashls",
     "jsonls",
-    "yamlls",
+    -- yamlls is set up manually below with schema config
+    -- "yamlls",
     "dockerls",
     "gopls",
     "clangd",
@@ -63,3 +64,13 @@ for _, server in pairs(servers) do
 
   ::continue::
 end
+
+lspconfig.yamlls.setup {
+  settings = {
+    yaml = {
+      schemas = {
+        kubernetes = { "*.yaml", "*.yml" },
+      },
+    },
+  },
+}

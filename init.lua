@@ -4,7 +4,10 @@ end
 
 require "user.options"
 require "user.keymaps"
+require "user.pack"
 require "user.lazy"
+require "user.treesitter"
+require "user.snippets"
 require "user.autocommands"
 require "user.lsp"
 require "user.colorscheme"

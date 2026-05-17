@@ -53,15 +53,6 @@ require("lazy").setup {
     },
     config = true,
   },
-  {
-
-    "MysticalDevil/inlay-hints.nvim",
-    event = "LspAttach",
-    dependencies = { "neovim/nvim-lspconfig" },
-    config = function()
-      require("inlay-hints").setup()
-    end,
-  },
 
   {
     "adtyap26/sql_docs.nvim",
@@ -91,17 +82,6 @@ require("lazy").setup {
       -- require "user.whichkey"
     end,
   },
-  {
-    "mcauley-penney/visual-whitespace.nvim",
-    config = true,
-    opts = {
-      highlight = { link = "Visual" },
-      space_char = "·",
-      tab_char = "→",
-      nl_char = "↲",
-      cr_char = "←",
-    },
-  },
   { "nvim-lua/plenary.nvim", lazy = true },
 
   {
@@ -119,33 +99,20 @@ require("lazy").setup {
     end,
   },
   {
-    "nvim-treesitter/nvim-treesitter",
-    event = "BufReadPost",
-    dependencies = {
-      {
-        "JoosepAlviste/nvim-ts-context-commentstring",
-        event = "VeryLazy",
-      },
-      {
-        "kyazdani42/nvim-web-devicons",
-        config = function()
-          require("nvim-web-devicons").setup {
-            override = {
-              zsh = {
-                icon = "",
-                color = "#428850",
-                cterm_color = "65",
-                name = "Zsh",
-              },
-            },
-            color_icons = true,
-            default = true,
-          }
-        end,
-      },
-    },
+    "kyazdani42/nvim-web-devicons",
     config = function()
-      require "user.treesitter"
+      require("nvim-web-devicons").setup {
+        override = {
+          zsh = {
+            icon = "",
+            color = "#428850",
+            cterm_color = "65",
+            name = "Zsh",
+          },
+        },
+        color_icons = true,
+        default = true,
+      }
     end,
   },
   {
@@ -153,6 +120,7 @@ require("lazy").setup {
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
+    config = true,
   },
   {
     "akinsho/bufferline.nvim",
@@ -194,51 +162,7 @@ require("lazy").setup {
   },
 
   {
-    "goolord/alpha-nvim",
-    event = "VimEnter",
-    config = function()
-      require "user.alpha"
-    end,
-  },
-  {
     "lunarvim/darkplus.nvim",
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    event = {
-      "InsertEnter",
-      "CmdlineEnter",
-    },
-    dependencies = {
-      {
-        "hrsh7th/cmp-nvim-lsp",
-      },
-      {
-        "hrsh7th/cmp-buffer",
-      },
-      {
-        "hrsh7th/cmp-path",
-      },
-      {
-        "hrsh7th/cmp-cmdline",
-      },
-      {
-        "saadparwaiz1/cmp_luasnip",
-      },
-      {
-        "hrsh7th/cmp-nvim-lua",
-      },
-    },
-    config = function()
-      require "user.cmp"
-    end,
-  },
-  {
-    "L3MON4D3/LuaSnip",
-    event = "InsertEnter",
-    dependencies = {
-      "rafamadriz/friendly-snippets",
-    },
   },
   {
     "neovim/nvim-lspconfig",
